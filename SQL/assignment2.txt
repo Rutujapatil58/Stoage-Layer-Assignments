@@ -1,0 +1,93 @@
+-- Display all the information of the EMP table?
+select * from Emp;
+db.emp.find()
+db.emp.find().pretty()
+
+-- Display unique Jobs from EMP table?
+select distinct job from Emp;
+
+-- List the emps in the asc order of their Salaries?
+select EMPNO,ENAME,SAL from Emp order by SAL;
+
+-- List the details of the emps in asc order of the Dptnos and desc of Jobs?
+select * from Emp  order by  DEPTNO asc,job desc;
+
+-- Display all the unique job groups in the descending order?
+select distinct job from Emp order by job desc;
+
+-- Display all the details of all Mgrs
+select * from Emp where empno in(select mgr from Emp);
+
+-- List the emps who joined before 1981
+select * from Emp where year(hiredate)<1981;
+
+
+-- Display the Empno, Ename, job, Hiredate, Exp of all Mgrs
+select * from Emp where empno in(select mgr from Emp);
+
+-- List the Empno, Ename, Sal, Exp of all emps working for Mgr 7369
+select * from Emp where mgr=7369;
+
+-- List the Empno, Ename, Sal, Daily sal of all emps in the asc order of Annsal
+select *,sal*12 as Annsal from Emp order by Annsal;
+
+-- Display all the details of the emps whose Comm  Is more than their Sal
+select * from EMP where COMM>SAL;
+
+-- List the emps along with their Exp and Daily Sal is more than Rs 100
+select * ,timestampdiff(YEAR,HIREDATE,CURDATE()) AS EXPRIANCE_OF_COMPANY,sal/30 as DAILY_SAL from EMP where sal/30>100;
+
+-- List the emps who are either ‘CLERK’ or ‘ANALYST’ in the Desc order
+select * from Emp where job='clerk' or job='analyst' order by ENAME desc;
+
+-- List the emps who joined on 1-MAY-81,3-DEC-81,17-DEC-81,19-JAN-80 in asc order of seniority
+select * from Emp where HIREDATE in ('1981-05-01','1981-12-03','1981-12-17','1980-01-19') order by HIREDATE;
+
+-- List the emp who are working for the Deptno 10 or20
+select * from Emp where DEPTNO in(10,20);
+
+ -- List the emps who are joined in the year 81
+ select * from Emp where year(hiredate)=1981;
+ 
+  -- List the emps Who Annual sal ranging from 22000 and 45000
+ select *,sal*12 as Annsal from Emp where sal*12 between 22000 and 45000;
+ 
+  -- List the Enames those are having five characters in their Names
+ select * from EMP where ENAME like '_____';
+ 
+  -- List the Enames those are starting with ‘S’ and with five characters
+  select * from EMP where ENAME like 'S____';
+  
+   -- List the emps those are having four chars and third character must be ‘r’
+ select * from EMP where ENAME like '__r_';
+ 
+  -- List the Five character names starting with ‘S’ and ending with ‘H’
+ select * from EMP where ENAME like 's___h';
+ 
+  -- List the emps who joined in January
+ select * from Emp where month(hiredate)=1;
+ 
+ -- List the emps whose names having a character set ‘ll’ together
+  select * from EMP where ENAME like '%ll%';
+  
+   -- List the emps who does not belong to Deptno 20
+select * from EMP where DEPTNO not in(20);
+
+
+
+ -- List the emps whose Empno not starting with digit78
+ select * from EMP where EMPNO not like '78%';
+ 
+-- List the emps who joined in any year but not belongs to the month of March
+  select * from Emp where month(hiredate)!=3;
+
+-- List all the Clerks of Deptno 20
+  select * from Emp where Job='CLERK' and DEPTNO=20;
+  
+-- List the emps of Deptno 30 or 10 joined in the year 1981
+  select * from Emp where year(hiredate)=1981 and DEPTNO in(10,30);
+
+ -- Display the details of SMITH
+  select * from EMP where ENAME='SMITH';
+ -- Display the location of SMITH
+  select e.ENAME,d.loc from EMP e join DEPT d on e.DEPTNO=d.DEPTNO where e.ENAME='SMITH';

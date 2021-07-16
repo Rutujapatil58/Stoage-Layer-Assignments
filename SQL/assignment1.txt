@@ -1,0 +1,102 @@
+create table EMP(
+   EMPNO int NOT NULL PRIMARY KEY,
+   ENAME VARCHAR(20),
+   JOB VARCHAR(9),
+   MGR int REFERENCES EMP(EMPNO),
+   HIREDATE DATETIME,
+   SAL Numeric(7, 2),
+   COMM Numeric(7, 2),
+   DEPTNO int REFERENCES DEPT(DEPTNO)
+
+);
+
+INSERT INTO EMP VALUES  (7839, 'KING',   'PRESIDENT', NULL, str_to_date('11/17/1981','%m/%d/%Y') , 5000, NULL, null);   
+INSERT INTO EMP VALUES   (7566, 'JONES',  'MANAGER',   		7839, str_to_date('04/2/1981'	,'%m/%d/%Y'),  2975, NULL, 20);
+INSERT INTO EMP VALUES   (7698, 'BLAKE',  'MANAGER',   		7839, str_to_date('05/01/1981'	,'%m/%d/%Y'),  2850, NULL, 30);
+INSERT INTO EMP VALUES   (7782, 'CLARK',  'MANAGER',   		7839, str_to_date('06/09/1981'	,'%m/%d/%Y'),  2450, NULL, 10);
+INSERT INTO EMP VALUES   (7999, 'RAHUL_DRAVID', 'MANAGER',  7839, str_to_date('01/01/2011'  ,'%m/%d/%Y'), 4000, NULL, 10);
+INSERT INTO EMP VALUES   (7788, 'SCOTT',  'ANALYST',   		7566, str_to_date('12/09/1982'  ,'%m/%d/%Y'), 3000, NULL, 20);
+INSERT INTO EMP VALUES   (7902, 'FORD',   'ANALYST',   		7566, str_to_date('12/03/1981'  ,'%m/%d/%Y'),  3000, NULL, 20);
+INSERT INTO EMP VALUES   (7499, 'ALLEN',  'SALESMAN',  		7698, str_to_date('02/20/1981'  ,'%m/%d/%Y'), 1600,  300, 30);
+INSERT INTO EMP VALUES   (7521, 'WARD',   'SALESMAN',  		7698, str_to_date('02/22/1981'  ,'%m/%d/%Y'), 1250,  500, 30);
+INSERT INTO EMP VALUES   (7654, 'MARTIN', 'SALESMAN',  		7698, str_to_date('09/28/1981'  ,'%m/%d/%Y'), 1250, 1400, 30);
+INSERT INTO EMP VALUES   (7844, 'TURNER', 'SALESMAN',  		7698, str_to_date('09/08/1981'  ,'%m/%d/%Y'),  1500,    0, 30);
+INSERT INTO EMP VALUES   (7900, 'JAMES',  'CLERK',			7698, str_to_date('12/03/1981'  ,'%m/%d/%Y'),   950, NULL, 30);
+INSERT INTO EMP VALUES   (7369, 'SMITH',  'CLERK',			7902, str_to_date('12/17/1980'  ,'%m/%d/%Y'), 800, NULL, 20);
+INSERT INTO EMP VALUES   (7876, 'ADAMS',  'CLERK',			7788, str_to_date('01/12/2003'  ,'%m/%d/%Y'), 1100, NULL, 20);
+INSERT INTO EMP VALUES   (7934, 'MILLER', 'CLERK',			7782, str_to_date('01/23/2002'  ,'%m/%d/%Y'), 1300, NULL, 10);
+INSERT INTO EMP VALUES   (7901, 'RAHUL_DRAVID', 'MANAGER',  7839, str_to_date('01/23/2012'  ,'%m/%d/%Y'), 3000, NULL, 10);
+
+-- 1.list all manager data
+select * from Emp where job="MANAGER" order by EMPNO;
+
+--- 2.LIST EMP WHO ARE WORKING AS MANAGER OR ANALYST OR CLERK
+select * from Emp where job in('MANAGER','ANALYST','CLERK');
+
+-- 3.LIST EMP WHO ARE EARNING SAL BETWEEN 3000 AND 5000 (INCLUSIVE OF LIMIT)
+select * from Emp where SAL between 3000 and 5000;
+
+-- 4.LIST EMP WHO ARE WORKING AS MANAGER OR ANALYST OR CLERK AND EARNING SAL BETWEEN 3000 AND 5000
+select * from Emp where job in('MANAGER','ANALYST','CLERK') and  SAL between 3000 and 5000;
+
+-- 5.LIST ALL EMP WHO ARE EARNING COMM
+select * from Emp where COMM is not null AND COMM>0 ;
+
+-- 6.LIST ALL EMP WHOSE COMM IS NOT NULL
+select * from Emp where COMM is not null ;
+
+-- 7.LIST ALL EMP WHOSE NAME STARTS WITH S
+select * from Emp where ENAME like 'S%';
+
+-- 8.LIST ALL EMP WHOSE NAME ENDS WITH R
+select * from Emp where ENAME like '%R';
+
+-- 9.LIST ALL EMP WHOSE NAME CONTAINS A
+select * from Emp where ENAME like '%A%';
+
+-- 10.LIST ALL EMP WHOSE NAME CONTAINS A AS SECOND LETTER
+select * from Emp where ENAME like '_A%';
+
+-- 11.LIST ALL EMP WHOSE NAME STARTS WITH EITHER M OR S
+select * from Emp where ENAME like 'M%' or ENAME like 'S%';
+
+-- 12.LIST ALL EMP WHOSE NAME STARTS BETWEEN A TO M
+select * from Emp where ENAME between 'A% ' and 'M%';
+
+-- 13.LIST ALL EMP WHOSE NAME CONTAINS _
+select * from Emp where ENAME  like '%\_%';
+
+-- 14.LIST ALL EMP WHO ARE WORKING AS MANAGER IN EITHER DEPT 10 OR 20 AND ALL CLERK FOR DEPT3 30
+select * from Emp where (JOB='MANAGER' and DEPTNO IN(10,20)) or (job='CLERK' and DEPTNO=30) ;
+
+-- 15.LIST ENAME, SAL AND BONUS AS 10% OF SALARY
+select ENAME, SAL,(SAL *0.10) as BONUS_AS_10_percent_OF_SALARY from Emp;
+
+-- 16.LIST EMP DATA AS PER THE ASCENDING ORDER OF NAME
+select * from Emp order by ENAME asc;
+
+-- 17.LIST ALL AS PER THEIR SALARY HIGHEST TO LOWEST
+select * from Emp  order by  SAL,DEPTNO desc;
+
+-- 18.LIST EMP AS PER THEIR DEPT, WITH IN DEPT HIGHEST TO LOWESET SAL
+select * from Emp  order by  DEPTNO asc,SAl desc;
+
+-- 23.LIST TOTAL ORGANIZATION SALARY
+select sum(SAL) as Total_Salary from Emp;
+
+-- 24.LIST DEPTWISE TOTAL SALARY
+select  DEPTNO,JOB ,sum(SAL) as Total_Salary from Emp group by DEPTNO ;
+
+-- 25.LIST JOBWISE EMP COUNT.
+select DEPTNO,JOB,count(EMPNO) AS Count_of_Emp from EMP group by DEPTNO;
+
+-- 26.LIST ALL EMP WHO HAVE JOINED IN MONTH OF FEB
+select * from Emp where month(hiredate)=2;
+
+-- 27.LIST HOW MANY YEARS OF SERVICE COMPLETED BY EACH EMP ARRANGE BASED ON TENURE HIGHEST TO LOWEST
+select EMPNO,ENAME,timestampdiff(YEAR,HIREDATE,CURDATE()) AS YEARS_OF_COMPLTED from Emp order by YEARS_OF_COMPLTED desc;
+
+-- 28.LIST EMP COUNT JOINED BETWEEN 1981 AND 1983
+select * from Emp where year(hiredate) between 1981 and 1983;
+
+
